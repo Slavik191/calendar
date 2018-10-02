@@ -20,8 +20,12 @@ class Calendar extends Component {
         super(props);
         this.state = {
             date: new Date(),
+            advancedMode: false,
+            events: {}
         }
     }
+
+    activateAdvancedMode = () => {this.setState({ advancedMode: !this.state.advancedMode });}
 
     nextmounth = () => {
         let date = this.state.date;
@@ -47,7 +51,7 @@ class Calendar extends Component {
         let daysInMonth = this.state.date.daysInMonth();
         for (let i = 1; i <= daysInMonth + startDay - 1; i++) {
             if (i >= startDay) {
-                items.push(<CalendarDay day={i - (startDay - 1)} key = {i - (startDay - 1)}/>)
+                items.push(<CalendarDay day={i - (startDay - 1)} key = {i - (startDay - 1)} advancedMode = {this.state.advancedMode}/>)
             }
             else {
                 items.push(<CalendarDay key={i + 50} />)
@@ -77,7 +81,7 @@ class Calendar extends Component {
                         </div>
                         <img src={right} onClick={this.nextmounth} />
                     </div>
-                    <ChangeMode />
+                    <ChangeMode  activateAdvancedMode = {this.activateAdvancedMode}/>
                 </div>
                 <div className='calendarbody'>
                     <div className='week'>

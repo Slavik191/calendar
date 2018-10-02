@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
 import Switch from '@material-ui/core/Switch';
+import './ChangeMode.sass'
 
 class ChangeMode extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            chekedA: false
+            cheked: false
         }
     }
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.checked });
-      };
+        this.props.activateAdvancedMode()
+        this.setState({ cheked: !this.state.cheked });
+    };
 
-    render(){
+    render() {
+        console.log(this.state.cheked)
         return (
-            <Switch
-                checked={this.state.checkedA}
-                onChange={this.handleChange()}
-                value="checkedA"
-            />
+            <div className = 'switch'>
+                <Switch
+                    checked={this.state.checked}
+                    onChange={this.handleChange()}
+                />
+            </div>
         )
     }
 }
