@@ -17,7 +17,6 @@ class ChangeMode extends Component {
     };
 
     render() {
-        console.log(this.state.cheked)
         return (
             <div className = 'switch'>
                 <Switch

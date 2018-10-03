@@ -5,6 +5,7 @@ import './CalendarDay.sass';
 class CalendarDay extends Component{
     state = {
         day: this.props.day !== undefined ? true : false,
+        modal: false
     }
 
     infoDay = () => {
@@ -12,9 +13,9 @@ class CalendarDay extends Component{
 
     render(){
         return(
-            <div className = 'calendarday' onClick = {this.infoDay}>
-                {this.state.day && <div className = {this.props.advancedMode ? ' numbersadvancedMode'  : 'numbers' }>{this.props.day}</div>}                
-            </div>
+                <div className = 'calendarday' onClick = {this.props.openModal}>
+                    {this.state.day && <div className = {this.props.advancedMode ? ' numbersadvancedMode'  : 'numbers' }>{this.props.day}</div>}                
+                </div>
         )
     }
 }

@@ -6,29 +6,24 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import FormNewEvent from '../FormNewEvent/FormNewEvent.jsx';
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
 
 class AlertDialogSlide extends Component {
-    state = {
-        open: false,
-    };
-
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
+    giveNewEvent = () => {
+        console.log(2)
+        this.props.closeModal();
+        this.props.getNewEvent(this.formNewEvent.state);
+    }
 
     render() {
         return (
             <div>
                 <Dialog
-                    open={this.state.open}
+                    open={this.props.open}
                     TransitionComponent={Transition}
                     keepMounted
                     onClose={this.handleClose}
@@ -36,20 +31,19 @@ class AlertDialogSlide extends Component {
                     aria-describedby="alert-dialog-slide-description"
                 >
                     <DialogTitle id="alert-dialog-slide-title">
-                        {"Use Google's location service?"}
+                        {"ДОБАВИТЬ СОБЫТИЕ"}
                     </DialogTitle>
                     <DialogContent>
-                        <DialogContentText id="alert-dialog-slide-description">
-                            Let Google help apps determine location. This means sending anonymous location data to
-                            Google, even when no apps are running.
-            </DialogContentText>
+                        
+                        <FormNewEvent getNewEvent = {this.props.getNewEvent} ref = {formNewEvent => this.formNewEvent = formNewEvent} />
+                   
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Disagree
+                        <Button onClick={this.props.closeModal} color="primary">
+                            Отмена
             </Button>
-                        <Button onClick={this.handleClose} color="primary">
-                            Agree
+                        <Button onClick={this.giveNewEvent} color="primary">
+                            Создать
             </Button>
                     </DialogActions>
                 </Dialog>
