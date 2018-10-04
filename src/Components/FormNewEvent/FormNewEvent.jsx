@@ -13,12 +13,66 @@ class FormNewEvent extends Component{
         endMinutes: '',
         description: ''
     };
+
+    componentWillUpdate(nextProps){
+        if(nextProps !== this.props){
+            this.setState({
+                day: nextProps.dateInfo !== null ? nextProps.dateInfo[0] : '',
+                month: nextProps.dateInfo !== null ? nextProps.dateInfo[1] : '',
+                year: nextProps.dateInfo !== null ? nextProps.dateInfo[2] : '',
+                startHours: '',
+                startMinutes: '',
+                endHours: '',
+                endMinutes: '',
+                description: ''
+            })
+        }
+    }
     
 
     handleChange = name => event => {
         this.setState({
             [name]: event.target.value,
         });
+    };
+
+    handleChangeTime = name => event => {
+        let change = false;
+        if(name.indexOf('Hours') !== -1){
+            if(event.target.value.length < 3 && +event.target.value < 24)
+            change = true;
+        }
+        if(name.indexOf('Minutes') !== -1){
+            if(event.target.value.length < 3 && +event.target.value < 60)
+            change = true;
+        }
+        if(change){
+            this.setState({
+                [name]: event.target.value,
+            });
+        }
+    };
+
+
+    handleChangeDate = name => event => {
+        let change = false;
+        if(name.indexOf('day') !== -1){
+            if(event.target.value.length < 3 && +event.target.value < 32)
+            change = true;
+        }
+        if(name.indexOf('month') !== -1){
+            if(event.target.value.length < 3 && +event.target.value < 13)
+            change = true;
+        }
+        if(name.indexOf('year') !== -1){
+            if(event.target.value.length < 5)
+            change = true;
+        }
+        if(change){
+            this.setState({
+                [name]: event.target.value,
+            });
+        }
     };
 
     render(){
@@ -30,7 +84,7 @@ class FormNewEvent extends Component{
                         id="outlined-name"
                         label="Число"
                         value={this.state.day}
-                        onChange={this.handleChange('day')}
+                        onChange={this.handleChangeDate('day')}
                         margin="normal"
                         variant="outlined"
                     />
@@ -38,7 +92,7 @@ class FormNewEvent extends Component{
                         id="outlined-name"
                         label="месяц"
                         value={this.state.month}
-                        onChange={this.handleChange('month')}
+                        onChange={this.handleChangeDate('month')}
                         margin="normal"
                         variant="outlined"
                     />
@@ -46,7 +100,7 @@ class FormNewEvent extends Component{
                         id="outlined-name"
                         label="Год"
                         value={this.state.year}
-                        onChange={this.handleChange('year')}
+                        onChange={this.handleChangeDate('year')}
                         margin="normal"
                         variant="outlined"
                     />
@@ -58,16 +112,16 @@ class FormNewEvent extends Component{
                         <TextField
                             id="outlined-name"
                             label="Часы"
-                            value={this.state.hours}
-                            onChange={this.handleChange('startHours')}
+                            value={this.state.startHours}
+                            onChange={this.handleChangeTime('startHours')}
                             margin="normal"
                             variant="outlined"
                         />
                         <TextField
                             id="outlined-name"
                             label="минуты"
-                            value={this.state.minutes}
-                            onChange={this.handleChange('startMinutes')}
+                            value={this.state.startMinutes}
+                            onChange={this.handleChangeTime('startMinutes')}
                             margin="normal"
                             variant="outlined"
                         />
@@ -77,16 +131,16 @@ class FormNewEvent extends Component{
                         <TextField
                             id="outlined-name"
                             label="Часы"
-                            value={this.state.hours}
-                            onChange={this.handleChange('endHours')}
+                            value={this.state.endHours}
+                            onChange={this.handleChangeTime('endHours')}
                             margin="normal"
                             variant="outlined"
                         />
                         <TextField
                             id="outlined-name"
-                            label="минуы"
-                            value={this.state.minutes}
-                            onChange={this.handleChange('endMinutes')}
+                            label="минуты"
+                            value={this.state.endMinutes}
+                            onChange={this.handleChangeTime('endMinutes')}
                             margin="normal"
                             variant="outlined"
                         />
