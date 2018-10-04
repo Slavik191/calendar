@@ -4,9 +4,11 @@ import './CalendarDay.sass';
 
 
 class CalendarDay extends Component{
-    state = {
-        day: this.props.day !== undefined ? true : false,
-        modal: false
+
+    shouldComponentUpdate(nextProps){
+        if(this.props === nextProps)
+            return false;
+        return true;
     }
 
 
@@ -17,16 +19,15 @@ class CalendarDay extends Component{
     }
 
     render(){
-        console.log(this.props.eventsDay)
         let eventsDay;
         if(this.props.eventsDay !== undefined){
             eventsDay = this.props.eventsDay.map(event => {
-                return <CalendarDayEvent event = {event} advancedMode = {this.props.advancedMode}/>  
+                return <CalendarDayEvent event = {event} advancedMode = {this.props.advancedMode} openEventModal = {this.props.openEventModal}/>  
             })
         }
         return(
                 <div className = 'calendarday' onClick = {this.openModalInfo}>
-                    {this.state.day && <div className = {this.props.advancedMode ?  'numbersadvancedMode' : this.props.eventsDay !== undefined ?  'numbers red' :  'numbers' }>{this.props.day}</div>} 
+                    {this.props.day !== undefined && <div className = {this.props.advancedMode ?  'numbersadvancedMode' : this.props.eventsDay !== undefined ?  'numbers red' :  'numbers' }>{this.props.day}</div>} 
                     <div className = {this.props.advancedMode ? ' eventsday eventsdayadvancedMode'  : 'eventsday' }>{eventsDay}</div>            
                 </div>
         )
