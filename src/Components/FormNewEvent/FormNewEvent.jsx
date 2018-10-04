@@ -7,15 +7,17 @@ class FormNewEvent extends Component{
         day: '',
         month: '',
         year: '',
-        hours: '',
-        minutes: '',
+        startHours: '',
+        startMinutes: '',
+        endHours: '',
+        endMinutes: '',
         description: ''
     };
     
 
     handleChange = name => event => {
         this.setState({
-          [name]: event.target.value,
+            [name]: event.target.value,
         });
     };
 
@@ -26,7 +28,7 @@ class FormNewEvent extends Component{
                 <div className = 'formdate'>
                     <TextField
                         id="outlined-name"
-                        label="День"
+                        label="Число"
                         value={this.state.day}
                         onChange={this.handleChange('day')}
                         margin="normal"
@@ -51,22 +53,44 @@ class FormNewEvent extends Component{
                 </div>
 
                 <div className = 'formtime'>
-                    <TextField
-                        id="outlined-name"
-                        label="Часы"
-                        value={this.state.hours}
-                        onChange={this.handleChange('hours')}
-                        margin="normal"
-                        variant="outlined"
-                    />
-                    <TextField
-                        id="outlined-name"
-                        label="минут"
-                        value={this.state.minutes}
-                        onChange={this.handleChange('minutes')}
-                        margin="normal"
-                        variant="outlined"
-                    />
+                    <div>
+                        <span>С</span>
+                        <TextField
+                            id="outlined-name"
+                            label="Часы"
+                            value={this.state.hours}
+                            onChange={this.handleChange('startHours')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="outlined-name"
+                            label="минуты"
+                            value={this.state.minutes}
+                            onChange={this.handleChange('startMinutes')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                    </div>
+                    <div>
+                        <span>ДО</span>
+                        <TextField
+                            id="outlined-name"
+                            label="Часы"
+                            value={this.state.hours}
+                            onChange={this.handleChange('endHours')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="outlined-name"
+                            label="минуы"
+                            value={this.state.minutes}
+                            onChange={this.handleChange('endMinutes')}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                    </div>
                 </div>
                 <TextField
                     id="outlined-multiline-flexible"

@@ -21,28 +21,45 @@ class Calendar extends Component {
     state = {
         date: new Date(),
         advancedMode: false,
-        events: {},
+        events: {}, //{2018:{10: {3:[{}]}}},
         modal: false
     }
 
     getNewEvent = (info) => {
-        if(String(new Date(`${info.year}/${info.month}/${info.day}`))  !== 'Invalid Date'){       
+        if(new Date(`${info.year}/${info.month}/${info.day}`).toString()  !== 'Invalid Date'){    
             let events = this.state.events;
             if(events[`${info.year}`] ===undefined)
                 events[`${info.year}`] = {};
             if(events[`${info.year}`][`${info.month}`] ===undefined)
                 events[`${info.year}`][`${info.month}`] = {};
             if(events[`${info.year}`][`${info.month}`][`${info.day}`] ===undefined)
-                events[`${info.year}`][`${info.month}`][`${info.day}`] = [];  
+                events[`${info.year}`][`${info.month}`][`${info.day}`] = [];
             
-            events[`${info.year}`][`${info.month}`][`${info.day}`].push({hours: info.hours, minutes: info.minutes, description: info.description})
+            if(events[`${info.year}`][`${info.month}`][`${info.day}`].length !== 0){
+                events[`${info.year}`][`${info.month}`][`${info.day}`].forEach(event => {
+                    if(!(info.startHours * 60 + info.startMinutes > event.endHours * 60 + event.endMinutes && info.endHours * 60 + info.endMinutes > event.startHours * 60 + event.startMinutes) || 
+                        !(info.startHours * 60 + info.startMinutes < event.endHours * 60 + event.endMinutes && info.endHours * 60 + info.endMinutes < event.startHours * 60 + event.startMinutes)){
+                            console.log('пересекается')
+                        }
+                })
+            }  
+            
+            events[`${info.year}`][`${info.month}`][`${info.day}`].push({day: info.day,
+                                                                            description: info.description,
+                                                                            endHours: info.endHours,
+                                                                            endMinutes: info.endMinutes,
+                                                                            month: info.month,
+                                                                            startHours: info.startHours,
+                                                                            startMinutes: info.startMinutes,
+                                                                            year: info.year
+                                                                        })
             this.setState({
                 events: events
             })
         }
     }
 
-    openModal = () => {
+    openModal = (dayInfo = null) => {
         this.setState({
             modal: true
         });
@@ -76,12 +93,25 @@ class Calendar extends Component {
 
     items = () => {
         let items = [];
+        let eventsMonth;
         let startDay = this.state.date.startDay();
         let daysInMonth = this.state.date.daysInMonth();
+        if(this.state.events[`${this.state.date.getYear() + 1900}`] !== undefined){
+            eventsMonth = this.state.events[`${this.state.date.getYear() + 1900}`][`${this.state.date.getMonth() + 1}`]
+        }
         for (let i = 1; i <= daysInMonth + startDay - 1; i++) {
             if (i >= startDay) {
-            
-                items.push(<CalendarDay day={i - (startDay - 1)} key = {i - (startDay - 1)} advancedMode = {this.state.advancedMode} ref={(calendarDay) => {this.calendarDay = calendarDay;}} openModal = {this.openModal}/>)
+                let eventsDay 
+                if(eventsMonth !== undefined)
+                    eventsDay = eventsMonth[`${i - (startDay - 1)}`];
+                items.push(<CalendarDay 
+                                day={i - (startDay - 1)}
+                                key = {i - (startDay - 1)}
+                                advancedMode = {this.state.advancedMode}
+                                ref={(calendarDay) => {this.calendarDay = calendarDay;}}
+                                openModal = {this.openModal} 
+                                eventsDay = {eventsDay}
+                            />)
             }
             else {
                 items.push(<CalendarDay key={i + 50} />)
@@ -98,7 +128,6 @@ class Calendar extends Component {
     }
 
     render() {
-        console.log(this.state.events)
         return (
             <React.Fragment>
                 <AlertDialogSlide open = {this.state.modal} closeModal = {this.closeModal} getNewEvent = {this.getNewEvent}/>
